@@ -67,3 +67,5 @@ venv
 #Static files
 staticfiles
 
+#Jet
+.idea
