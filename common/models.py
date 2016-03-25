@@ -5,6 +5,7 @@ from django.core.exceptions import ValidationError
 
 
 ACTIONS_CHOICES = [
+    (b'not_decided', b'Not decided yet'),
     (b'relocate', b'Relocate'),
     (b'store', b'Store'),
     (b'sell', b'Sell'),
