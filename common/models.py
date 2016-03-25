@@ -24,7 +24,8 @@ class StoragePlace(models.Model):
 
 class Box(models.Model):
     name = models.CharField(max_length=100)
-    storage_place = models.ForeignKey(StoragePlace, on_delete=models.PROTECT, related_name="boxes")
+    storage_place = models.ForeignKey(StoragePlace, on_delete=models.SET_NULL, related_name="boxes", null=True,
+                                      blank=True)
     # measures?
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
@@ -51,7 +52,7 @@ class Receiver(models.Model):
     email = models.EmailField(null=True, blank=True)
     phone_number = models.CharField(max_length=20, null=True, blank=True)
     address = models.TextField(null=True, blank=True)
-    preferred_contact_channel = models.ForeignKey(ContactChannel, on_delete=models.PROTECT)
+    preferred_contact_channel = models.ForeignKey(ContactChannel, on_delete=models.SET_NULL, null=True, blank=True)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
@@ -96,12 +97,12 @@ class Item(models.Model):
     name = models.CharField(max_length=100)
     original_price = models.FloatField(default=0.0)
     action = models.CharField(max_length=20, choices=ACTIONS_CHOICES, default='relocate', null=True, blank=True)
-    box = models.ForeignKey(Box, on_delete=models.PROTECT, related_name="items", null=True, blank=True)
-    storage_place = models.ForeignKey(StoragePlace, on_delete=models.PROTECT, related_name="items", null=True,
+    box = models.ForeignKey(Box, on_delete=models.SET_NULL, related_name="items", null=True, blank=True)
+    storage_place = models.ForeignKey(StoragePlace, on_delete=models.SET_NULL, related_name="items", null=True,
                                       blank=True)
-    receiver = models.OneToOneField(Receiver, on_delete=models.PROTECT, related_name="free_items", null=True,
+    receiver = models.OneToOneField(Receiver, on_delete=models.SET_NULL, related_name="free_items", null=True,
                                     blank=True)
-    sale = models.OneToOneField(Sale, on_delete=models.PROTECT, related_name="item", null=True, blank=True)
+    sale = models.OneToOneField(Sale, on_delete=models.SET_NULL, related_name="item", null=True, blank=True)
     # measures?
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
