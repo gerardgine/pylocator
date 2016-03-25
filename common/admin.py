@@ -6,6 +6,7 @@ from .models import StoragePlace, Box, ContactChannel, Receiver, SalesChannel, S
 class ItemAdmin(admin.ModelAdmin):
     list_display = ("name", "action")
     search_fields = ["name"]
+    list_filter = ("action",)
 
 
 class ReceiverAdmin(admin.ModelAdmin):
