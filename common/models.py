@@ -83,6 +83,7 @@ class Sale(models.Model):
     desired_price = models.FloatField(default=0.0)
     final_price = models.FloatField(null=True, blank=True)
     buyer = models.ForeignKey(Receiver, on_delete=models.PROTECT, null=True, blank=True)
+    is_closed = models.BooleanField(default=False)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
