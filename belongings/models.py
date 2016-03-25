@@ -96,7 +96,7 @@ class Sale(models.Model):
 class Item(models.Model):
     name = models.CharField(max_length=100)
     original_price = models.FloatField(default=0.0)
-    action = models.CharField(max_length=20, choices=ACTIONS_CHOICES, default='relocate', null=True, blank=True)
+    action = models.CharField(max_length=20, choices=ACTIONS_CHOICES, default='sell', null=True, blank=True)
     box = models.ForeignKey(Box, on_delete=models.SET_NULL, related_name="items", null=True, blank=True)
     storage_place = models.ForeignKey(StoragePlace, on_delete=models.SET_NULL, related_name="items", null=True,
                                       blank=True)
