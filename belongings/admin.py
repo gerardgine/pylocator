@@ -15,6 +15,7 @@ class ReceiverAdmin(admin.ModelAdmin):
 
 class SaleAdmin(admin.ModelAdmin):
     list_display = ("__unicode__", "is_closed")
+    list_filter = ("is_closed",)
 
 
 class ItemInline(admin.TabularInline):

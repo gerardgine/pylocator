@@ -16,7 +16,7 @@ class Todo(models.Model):
     title = models.CharField(max_length=200)
     description = models.TextField(null=True, blank=True)
     executor = models.ForeignKey(Executor, on_delete=models.SET_NULL, null=True, blank=True)
-    place = models.CharField(max_length=200)
+    place = models.CharField(max_length=200, null=True, blank=True)
     due_date = models.DateTimeField(null=True, blank=True)
     is_completed = models.BooleanField(default=False)
     created = models.DateTimeField(auto_now_add=True)
