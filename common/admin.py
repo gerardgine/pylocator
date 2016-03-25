@@ -17,8 +17,14 @@ class SaleAdmin(admin.ModelAdmin):
     list_display = ("__unicode__", "is_closed")
 
 
+class ItemInline(admin.TabularInline):
+    model = Item
+    extra = 1
+
+
 class BoxAdmin(admin.ModelAdmin):
     list_display = ("name", "storage_place")
+    inlines = (ItemInline,)
 
 
 admin.site.register(Item, ItemAdmin)
