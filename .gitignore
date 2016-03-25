@@ -63,3 +63,7 @@ target/
 
 #Virtualenv
 venv
+
+#Static files
+staticfiles
+
