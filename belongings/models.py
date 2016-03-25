@@ -79,7 +79,26 @@ class SalesChannel(models.Model):
         return self.name
 
 
+class Item(models.Model):
+    name = models.CharField(max_length=100)
+    original_price = models.FloatField(default=0.0)
+    action = models.CharField(max_length=20, choices=ACTIONS_CHOICES, default='sell', null=True, blank=True)
+    box = models.ForeignKey(Box, on_delete=models.SET_NULL, related_name="items", null=True, blank=True)
+    storage_place = models.ForeignKey(StoragePlace, on_delete=models.SET_NULL, related_name="items", null=True,
+                                      blank=True)
+    receiver = models.OneToOneField(Receiver, on_delete=models.SET_NULL, related_name="free_items", null=True,
+                                    blank=True)
+    # sale = models.OneToOneField(Sale, on_delete=models.SET_NULL, null=True, blank=True)
+    # measures?
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+
+    def __unicode__(self):
+        return self.name
+
+
 class Sale(models.Model):
+    item = models.OneToOneField(Item, on_delete=models.CASCADE, primary_key=True)
     sales_channel = models.ForeignKey(SalesChannel, on_delete=models.PROTECT)
     url = models.URLField(null=True, blank=True)
     desired_price = models.FloatField(default=0.0)
@@ -91,22 +110,4 @@ class Sale(models.Model):
 
     def __unicode__(self):
         return "{} ({})".format(self.item, self.sales_channel)
-
-
-class Item(models.Model):
-    name = models.CharField(max_length=100)
-    original_price = models.FloatField(default=0.0)
-    action = models.CharField(max_length=20, choices=ACTIONS_CHOICES, default='sell', null=True, blank=True)
-    box = models.ForeignKey(Box, on_delete=models.SET_NULL, related_name="items", null=True, blank=True)
-    storage_place = models.ForeignKey(StoragePlace, on_delete=models.SET_NULL, related_name="items", null=True,
-                                      blank=True)
-    receiver = models.OneToOneField(Receiver, on_delete=models.SET_NULL, related_name="free_items", null=True,
-                                    blank=True)
-    sale = models.OneToOneField(Sale, on_delete=models.SET_NULL, related_name="item", null=True, blank=True)
-    # measures?
-    created = models.DateTimeField(auto_now_add=True)
-    updated = models.DateTimeField(auto_now=True)
-
-    def __unicode__(self):
-        return self.name
 
