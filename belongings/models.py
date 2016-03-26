@@ -86,7 +86,6 @@ class Item(models.Model):
     box = models.ForeignKey(Box, on_delete=models.SET_NULL, related_name="items", null=True, blank=True)
     storage_place = models.ForeignKey(StoragePlace, on_delete=models.SET_NULL, related_name="items", null=True,
                                       blank=True)
-    receiver = models.ForeignKey(Receiver, on_delete=models.SET_NULL, related_name="free_items", null=True, blank=True)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
@@ -101,6 +100,7 @@ class Sale(models.Model):
     desired_price = models.FloatField(default=0.0)
     final_price = models.FloatField(null=True, blank=True)
     buyer = models.ForeignKey(Receiver, on_delete=models.PROTECT, null=True, blank=True)
+    is_gift = models.BooleanField(default=False)
     is_closed = models.BooleanField(default=False)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
