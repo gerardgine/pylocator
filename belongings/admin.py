@@ -29,8 +29,8 @@ class ReceiverAdmin(admin.ModelAdmin):
 
 
 class SaleAdmin(admin.ModelAdmin):
-    list_display = ("__unicode__", "is_closed")
-    list_filter = ("is_closed",)
+    list_display = ("__unicode__", "is_gift", "is_closed")
+    list_filter = ("is_gift", "is_closed",)
 
 
 class BoxAdmin(admin.ModelAdmin):
