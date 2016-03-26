@@ -64,7 +64,7 @@ class Receiver(models.Model):
             return "{} ({})".format(self.name, self.username)
 
     def clean(self):
-        if self.name is None and self.username is None:
+        if not self.name and not self.username:
             raise ValidationError("Either 'name' or 'username' must be specified")
         return
 
@@ -83,14 +83,35 @@ class Item(models.Model):
     description = models.TextField(null=True, blank=True)
     original_price = models.FloatField(default=0.0)
     action = models.CharField(max_length=20, choices=ACTIONS_CHOICES, default='sell', null=True, blank=True)
-    box = models.ForeignKey(Box, on_delete=models.SET_NULL, related_name="items", null=True, blank=True)
-    storage_place = models.ForeignKey(StoragePlace, on_delete=models.SET_NULL, related_name="items", null=True,
-                                      blank=True)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
     def __unicode__(self):
         return self.name
+
+
+class ItemStorage(models.Model):
+    item = models.OneToOneField(Item, on_delete=models.CASCADE, primary_key=True, related_name="storage")
+    box = models.ForeignKey(Box, on_delete=models.SET_NULL, related_name="storage", null=True, blank=True)
+    storage_place = models.ForeignKey(StoragePlace, on_delete=models.SET_NULL, null=True)
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+
+    def __unicode__(self):
+        if not self.storage_place:
+            return str(self.box)
+        elif not self.box:
+            return str(self.storage_place)
+        else:
+            return "{} {}".format(self.storage_place, self.box)
+
+    def clean(self):
+        if self.storage_place is None and self.box is None:
+            raise ValidationError("Either 'box' or 'storage_place' must be specified")
+        elif self.storage_place is not None and self.box is not None:
+            raise ValidationError("You can't set both a box and a storage place")
+        else:
+            return
 
 
 class Sale(models.Model):

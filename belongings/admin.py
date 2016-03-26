@@ -1,17 +1,27 @@
 from django.contrib import admin
 
-from .models import StoragePlace, Box, ContactChannel, Receiver, SalesChannel, Sale, Item
+from .models import StoragePlace, Box, ContactChannel, Receiver, SalesChannel, Sale, Item, ItemStorage
 
 
 class SaleInline(admin.StackedInline):
     model = Sale
 
 
+class ItemStorageInline(admin.TabularInline):
+    model = ItemStorage
+
+
+class ItemStorageForBoxesInline(admin.TabularInline):
+    model = ItemStorage
+    fields = ("item",)
+    extra = 1
+
+
 class ItemAdmin(admin.ModelAdmin):
-    list_display = ("name", "action")
+    list_display = ("name", "action", "storage")
     search_fields = ["name"]
     list_filter = ("action",)
-    inlines = (SaleInline,)
+    inlines = (ItemStorageInline, SaleInline,)
 
 
 class ReceiverAdmin(admin.ModelAdmin):
@@ -23,14 +33,9 @@ class SaleAdmin(admin.ModelAdmin):
     list_filter = ("is_closed",)
 
 
-class ItemsInline(admin.TabularInline):
-    model = Item
-    extra = 1
-
-
 class BoxAdmin(admin.ModelAdmin):
-    list_display = ("name", "storage_place")
-    inlines = (ItemsInline,)
+    list_display = ("name", "storage_place",)
+    inlines = (ItemStorageForBoxesInline,)
 
 
 admin.site.register(Item, ItemAdmin)
