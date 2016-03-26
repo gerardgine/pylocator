@@ -18,7 +18,7 @@ class ItemStorageForBoxesInline(admin.TabularInline):
 
 
 class ItemAdmin(admin.ModelAdmin):
-    list_display = ("name", "action", "storage")
+    list_display = ("name", "action", "has_sale", "storage")
     search_fields = ["name"]
     list_filter = ("action",)
     inlines = (ItemStorageInline, SaleInline,)

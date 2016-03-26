@@ -89,6 +89,11 @@ class Item(models.Model):
     def __unicode__(self):
         return self.name
 
+    def has_sale(self):
+        return self.sale is not None
+
+    has_sale.boolean = True
+
 
 class ItemStorage(models.Model):
     item = models.OneToOneField(Item, on_delete=models.CASCADE, primary_key=True, related_name="storage")
