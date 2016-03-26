@@ -93,7 +93,7 @@ class Item(models.Model):
 class ItemStorage(models.Model):
     item = models.OneToOneField(Item, on_delete=models.CASCADE, primary_key=True, related_name="storage")
     box = models.ForeignKey(Box, on_delete=models.SET_NULL, related_name="storage", null=True, blank=True)
-    storage_place = models.ForeignKey(StoragePlace, on_delete=models.SET_NULL, null=True)
+    storage_place = models.ForeignKey(StoragePlace, on_delete=models.SET_NULL, null=True, blank=True)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
@@ -129,3 +129,12 @@ class Sale(models.Model):
     def __unicode__(self):
         return "{} ({})".format(self.item, self.sales_channel)
 
+    def clean(self):
+        if self.is_gift and (self.desired_price > 0 or self.final_price > 0):
+            raise ValidationError("A gift can't have a price higher than 0")
+        elif self.item.action == "give" and not self.is_gift:
+            raise ValidationError("The item action is 'give' but the sale is not marked as a gift")
+        elif self.item.action == "sale" and self.is_gift:
+            raise ValidationError("The item action is 'sell' but the sale is marked as a gift")
+        else:
+            return
