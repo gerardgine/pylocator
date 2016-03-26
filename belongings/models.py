@@ -26,7 +26,6 @@ class Box(models.Model):
     name = models.CharField(max_length=100)
     storage_place = models.ForeignKey(StoragePlace, on_delete=models.SET_NULL, related_name="boxes", null=True,
                                       blank=True)
-    # measures?
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
@@ -81,15 +80,13 @@ class SalesChannel(models.Model):
 
 class Item(models.Model):
     name = models.CharField(max_length=100)
+    description = models.TextField(null=True, blank=True)
     original_price = models.FloatField(default=0.0)
     action = models.CharField(max_length=20, choices=ACTIONS_CHOICES, default='sell', null=True, blank=True)
     box = models.ForeignKey(Box, on_delete=models.SET_NULL, related_name="items", null=True, blank=True)
     storage_place = models.ForeignKey(StoragePlace, on_delete=models.SET_NULL, related_name="items", null=True,
                                       blank=True)
-    receiver = models.OneToOneField(Receiver, on_delete=models.SET_NULL, related_name="free_items", null=True,
-                                    blank=True)
-    # sale = models.OneToOneField(Sale, on_delete=models.SET_NULL, null=True, blank=True)
-    # measures?
+    receiver = models.ForeignKey(Receiver, on_delete=models.SET_NULL, related_name="free_items", null=True, blank=True)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
@@ -98,7 +95,7 @@ class Item(models.Model):
 
 
 class Sale(models.Model):
-    item = models.OneToOneField(Item, on_delete=models.CASCADE, primary_key=True)
+    item = models.OneToOneField(Item, on_delete=models.CASCADE, primary_key=True, related_name="sale")
     sales_channel = models.ForeignKey(SalesChannel, on_delete=models.PROTECT)
     url = models.URLField(null=True, blank=True)
     desired_price = models.FloatField(default=0.0)
