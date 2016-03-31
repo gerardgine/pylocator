@@ -92,7 +92,11 @@ class Item(models.Model):
     def has_sale(self):
         return self.sale is not None
 
+    def sale_is_closed(self):
+        return self.sale.is_closed
+
     has_sale.boolean = True
+    sale_is_closed.boolean = True
 
 
 class ItemStorage(models.Model):
