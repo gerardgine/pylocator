@@ -10,6 +10,7 @@ ACTIONS_CHOICES = [
     (b'store', b'Store'),
     (b'sell', b'Sell'),
     (b'give', b'Give'),
+    (b'throw_away', b'Throw away'),
 ]
 
 
