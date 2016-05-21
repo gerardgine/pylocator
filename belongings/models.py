@@ -109,11 +109,11 @@ class ItemStorage(models.Model):
 
     def __unicode__(self):
         if not self.storage_place:
-            return str(self.box)
+            return unicode(self.box)
         elif not self.box:
-            return str(self.storage_place)
+            return unicode(self.storage_place)
         else:
-            return "{} {}".format(self.storage_place, self.box)
+            return u"{} {}".format(self.storage_place, self.box)
 
     def clean(self):
         if self.storage_place is None and self.box is None:
